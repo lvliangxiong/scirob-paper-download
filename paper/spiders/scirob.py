@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from paper.items import SciRobIssueItem
+from scrapy.shell import inspect_response
 
 
 class ScirobSpider(scrapy.Spider):
     name = 'scirob'
     base_url = "https://robotics.sciencemag.org/content/by/year/"
     start_year = 2016
-    current_year = 2019
+    current_year = 2016
 
     custom_settings = {
         "DOWNLOAD_TIMEOUT": 300,
@@ -37,6 +38,7 @@ class ScirobSpider(scrapy.Spider):
 
     # extract all urls for pdfs in the issue and store them in the item
     def parse_pdf(self, response):
+        # inspect_response(response, self)
         # extract the volume and issue
         current_url = response.url
         volume = int(current_url.split("/")[-2])

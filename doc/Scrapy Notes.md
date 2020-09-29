@@ -4,7 +4,7 @@
 
 ## Install `Scrapy`
 
- To install this [package](https://anaconda.org/conda-forge/scrapy) with `conda` run one of the following:
+To install this [package](https://anaconda.org/conda-forge/scrapy) with `conda` run one of the following:
 
 ```bash
 conda install -c conda-forge scrapy
@@ -13,11 +13,11 @@ conda install -c conda-forge/label/cf201901 scrapy
 
 But I get some problems by doing so. I don't know whether it is because I used to install `Anaconda` and `scrapy`, and uninstalled them later before. So I tried `pip install scrapy`, and it worked. Anyway, once you have installed `scrapy`, you can continue.
 
-**It's worth noting that operations in this note are only tested on *Windows 10*. There might be a little bit different when comes with other platforms.**
+**It's worth noting that operations in this note are only tested on _Windows 10_. There might be a little bit different when comes with other platforms.**
 
 ## Architecture
 
-<img src="images/scrapy_architecture_02.png" style="zoom:50%;" />
+<img src="images/scrapy_architecture.png" style="zoom:50%;" />
 
 A overview of the architecture of the `scrapy` should be very useful and helpful for a novice to begin with.
 
@@ -45,20 +45,20 @@ eg. `scrapy startproject paper PaperDownload`
 
 You will get a new folder named `PaperDownload` and `scrapy` will create some initial files for your project `paper`. The folder architecture is shown as follows. The comments show the function of each file.
 
- ````python
+```python
 PaperDownload/
-    scrapy.cfg            # deploy configuration file
-    paper/                # project's Python module, you'll import your code from here
-        __init__.py
-        items.py          # project items definition file
-        middlewares.py    # project middlewares file
-        pipelines.py      # project pipelines file
-        settings.py       # project settings file
-        spiders/          # a directory where you'll later put your spiders
-            __init__.py
- ````
+   scrapy.cfg            # deploy configuration file
+   paper/                # project's Python module, you'll import your code from here
+       __init__.py
+       items.py          # project items definition file
+       middlewares.py    # project middlewares file
+       pipelines.py      # project pipelines file
+       settings.py       # project settings file
+       spiders/          # a directory where you'll later put your spiders
+           __init__.py
+```
 
-Generally speaking, you put your code in `spiders/` folder. Other module such as `Item`, `Pipeline`, `middleware` are not needed for new beginners. In this notes, I will modify some of these modules. **In this process, you should keep the framework of  `scrapy` in mind to fully understand what's going on in the project.**
+Generally speaking, you put your code in `spiders/` folder. Other module such as `Item`, `Pipeline`, `middleware` are not needed for new beginners. In this notes, I will modify some of these modules. **In this process, you should keep the framework of `scrapy` in mind to fully understand what's going on in the project.**
 
 For more information of what these files are used for, please refer to this [link](https://docs.scrapy.org/en/latest/intro/tutorial.html#creating-a-project).
 
@@ -90,33 +90,33 @@ class ScirobSpider(scrapy.Spider):
         pass
 ```
 
-2. manually 
+2. manually
 
 Create a `.py` file in the `spiders` folder. And write your spider manually.
 
 Both ways are fine.
 
-Suppose you have choose the first way, and you got the `scirob.py` file and there were some default content inside. 
+Suppose you have choose the first way, and you got the `scirob.py` file and there were some default content inside.
 
 The created file contains the definition of a spider, whose name is `scirob`, defined in the attribute `name`. The name of the spider will be used in the command line to run the spider. In addition, `allowed_domains` defines the domain this spider is allowed to access. `start_urls` define the list which contains the initial URL nodes.
 
-Function `parse` define the callback function when responses of URLs in `start_urls` are available. 
+Function `parse` define the callback function when responses of URLs in `start_urls` are available.
 
 **And requests yielded in the parse function will be processed later in the corresponding callback function.** This is the default behavior of a scrapy spider, and it can be custom-designed.
 
 #### Analyze spider logic
 
-First we visit the website of *Science Robotics*, analyze the structure of the website.
+First we visit the website of _Science Robotics_, analyze the structure of the website.
 
-It's obvious that papers of *Science Robotics* are arranged in issues. Papers in one year are arranged in one volume, and every month there is an issue. You can link to all the issues in the *Archives*. So a natural solution is, first visit the archives, then extract the issue links, jump to the issue page, last obtain the pdf link in the issue page.
+It's obvious that papers of _Science Robotics_ are arranged in issues. Papers in one year are arranged in one volume, and every month there is an issue. You can link to all the issues in the _Archives_. So a natural solution is, first visit the archives, then extract the issue links, jump to the issue page, last obtain the pdf link in the issue page.
 
-![image-20200109225106662](images/image-20200109225106662.png)
+![image-20200109225106662](images/scirob-screenshot-1.png)
 
-The *Archives* have a separate page for each year, from 2016 to 2019. Their addresses are similar with a common pattern `https://robotics.sciencemag.org/content/by/year/year_no`, where `year_no` can be 2016, 2017, 2018 and 2019. These URLs will be the initial network nodes the spider is going to visit.
+The _Archives_ have a separate page for each year, from 2016 to 2019. Their addresses are similar with a common pattern `https://robotics.sciencemag.org/content/by/year/year_no`, where `year_no` can be 2016, 2017, 2018 and 2019. These URLs will be the initial network nodes the spider is going to visit.
 
 #### Implement your spider step by step
 
-This will be a tough journey, and I will try my best to make it simple and easy to understand. 
+This will be a tough journey, and I will try my best to make it simple and easy to understand.
 
 According to the analysis above, we have decided the beginning URLs. To make your spider starting from these URLs, you just simply assign the `start_urls` attribute of the spider.
 
@@ -142,7 +142,7 @@ class ScirobSpider(scrapy.Spider):
             yield scrapy.Request(url, callback=self.parse_issue)
 ```
 
-Now, you have told the framework the initial network nodes (URLs) we want to crawl, which correspond to the **step 1** in the framework architecture. The framework will handle the following step 2, 3, 4, 5, 6 for you if you haven't self-defined the middleware modules. In fact, in this simple demonstration, you don't need to change the behavior of the middleware modules, so just let the framework handle all other things for you. 
+Now, you have told the framework the initial network nodes (URLs) we want to crawl, which correspond to the **step 1** in the framework architecture. The framework will handle the following step 2, 3, 4, 5, 6 for you if you haven't self-defined the middleware modules. In fact, in this simple demonstration, you don't need to change the behavior of the middleware modules, so just let the framework handle all other things for you.
 
 ###### Response Analysis
 
@@ -154,9 +154,9 @@ def parse_issue(self, response):
   pass
 ```
 
-The `Response` object are passed  to the function as an argument. But it does nothing. In order to make it do something, you need use a tool called regular expression. For simplicity, `Reponse` object have provided a lot of methods for you to get its content, which make you needn't to learn RE at all. 
+The `Response` object are passed to the function as an argument. But it does nothing. In order to make it do something, you need use a tool called regular expression. For simplicity, `Reponse` object have provided a lot of methods for you to get its content, which make you needn't to learn RE at all.
 
-In the analysis of text content, regular expression comes the first head. You can use the internal regular expression engine in python to parse the text content. In the case, we are going to take the advantage of the CSS selector parse engine provided in scrapy, which is based on `xpath`. It's more convenient and easy to be comprehended. 
+In the analysis of text content, regular expression comes the first head. You can use the internal regular expression engine in python to parse the text content. In the case, we are going to take the advantage of the CSS selector parse engine provided in scrapy, which is based on `xpath`. It's more convenient and easy to be comprehended.
 
 You simple invoke the `css` method of a `Response` object. Some examples are listed here:
 
@@ -169,9 +169,9 @@ response.css('li.next a::attr(href)').get() # get href attribute
 response.css('li.next a').attrib['href']
 ```
 
-Ok, now we are going to parse the links which represents every issue of `Sci Rob`. 
+Ok, now we are going to parse the links which represents every issue of `Sci Rob`.
 
-![image-20200307111043440](images/image-20200307111043440.png)
+![image-20200307111043440](images/scirob-screenshot-2.png)
 
 Open the development console by press `F12`, locating the element which contain the links you need using inspector. The element will be highlighted, and that's exactly what you need. Like the source code above, it is `<a class="hightlight-image" href="/content/4/30">...`, note that it's not the `<img>` tag. So we write a CSS selector to obtain the link.
 
@@ -200,7 +200,7 @@ Now we have process the response page from initial network page and yield new re
 
 Same routine, we parse the pdf links and yield them.
 
-![image-20200307113213152](images/image-20200307113213152.png)
+![image-20200307113213152](images/scirob-screenshot-3.png)
 
 ```python
 def parse_pdf(self, response):
@@ -218,7 +218,7 @@ def parse_pdf(self, response):
 
 In this callback function, we can obtain all the pdf links in one issue. Now we have to consider how to download them. Generally speaking, you can do them all by manually, it is too stupid. The reason why we use the framework, because they can save time for us. In fact, scrapy also provide a file downloader for us. In this tutorial, we are going to use the internal downloader to simplify the process.
 
-In order to use the downloader in scrapy, first you should add an item definition in the the `items.py`.	
+In order to use the downloader in scrapy, first you should add an item definition in the the `items.py`.
 
 ```python
 from scrapy import Item
@@ -259,11 +259,11 @@ def parse_pdf(self, response):
     yield issue
 ```
 
-This should be very easy to understand. I extract the volume number, issue number and pdf links from the issue page and store them into an `SciRobIssueItem` object and yield it. The meaning of yielding an `Item` is the same as yielding a `Request`, the difference lies in the process of the scrapy engine. According to the architecture of scrapy, the engine will pass the item to the `Item Pipelines`. That's where we will going to post-process the yielded `Item`. 
+This should be very easy to understand. I extract the volume number, issue number and pdf links from the issue page and store them into an `SciRobIssueItem` object and yield it. The meaning of yielding an `Item` is the same as yielding a `Request`, the difference lies in the process of the scrapy engine. According to the architecture of scrapy, the engine will pass the item to the `Item Pipelines`. That's where we will going to post-process the yielded `Item`.
 
 ###### FilesPipeline
 
-Like `Request` object who must have a callback function when yielded, the `Item` object also need a `Pipeline` object to do the control  the  processing of downloading the files. You can set the `ITEM_PIPELINES` in the `settings.py` but it will take effect in the project scope. We recommend setting it in the spider file, which just take effect in the spider scope.
+Like `Request` object who must have a callback function when yielded, the `Item` object also need a `Pipeline` object to do the control the processing of downloading the files. You can set the `ITEM_PIPELINES` in the `settings.py` but it will take effect in the project scope. We recommend setting it in the spider file, which just take effect in the spider scope.
 
 ```python
 custom_settings = {
@@ -518,7 +518,7 @@ Now run your spider by command: `scrapy crawl scirob` in the project folder. Som
 2020-03-07 13:50:35 [scrapy.pipelines.files] DEBUG: File (downloaded): Downloaded file from <GET https://robotics.sciencemag.org/content/1/1/eaag2048.full.pdf> referred in <None>
 2020-03-07 13:51:21 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://robotics.sciencemag.org/content/robotics/1/1/eaal2099.full.pdf> (referer: None)
 2020-03-07 13:51:21 [scrapy.pipelines.files] DEBUG: File (downloaded): Downloaded file from <GET https://robotics.sciencemag.org/content/1/1/eaal2099.full.pdf> referred in <None>
-2020-03-07 13:51:21 [scrapy.core.scraper] DEBUG: Scraped from <200 https://robotics.sciencemag.org/content/1/1>       
+2020-03-07 13:51:21 [scrapy.core.scraper] DEBUG: Scraped from <200 https://robotics.sciencemag.org/content/1/1>
 {'file_urls': ['https://robotics.sciencemag.org/content/1/1/eaal2099.full.pdf',
                'https://robotics.sciencemag.org/content/1/1/eaah3690.full.pdf',
                'https://robotics.sciencemag.org/content/1/1/eaai7529.full.pdf',
@@ -575,7 +575,7 @@ Now run your spider by command: `scrapy crawl scirob` in the project folder. Som
             'url': 'https://robotics.sciencemag.org/content/1/1/eaag3296.full.pdf'}],
  'issue': 1,
  'volume': 1}
-2020-03-07 13:53:18 [scrapy.core.scraper] DEBUG: Scraped from <200 https://robotics.sciencemag.org/content/1/1>       
+2020-03-07 13:53:18 [scrapy.core.scraper] DEBUG: Scraped from <200 https://robotics.sciencemag.org/content/1/1>
 {'file_urls': ['https://robotics.sciencemag.org/content/1/1/eaal2099.full.pdf',
                'https://robotics.sciencemag.org/content/1/1/eaah3690.full.pdf',
                'https://robotics.sciencemag.org/content/1/1/eaai7529.full.pdf',
@@ -620,7 +620,7 @@ Now run your spider by command: `scrapy crawl scirob` in the project folder. Som
             'url': 'https://robotics.sciencemag.org/content/1/1/eaai7529.full.pdf'}],
  'issue': 1,
  'volume': 1}
-2020-03-07 13:53:18 [scrapy.core.scraper] DEBUG: Scraped from <200 https://robotics.sciencemag.org/content/1/1>       
+2020-03-07 13:53:18 [scrapy.core.scraper] DEBUG: Scraped from <200 https://robotics.sciencemag.org/content/1/1>
 {'file_urls': ['https://robotics.sciencemag.org/content/1/1/eaal2099.full.pdf',
                'https://robotics.sciencemag.org/content/1/1/eaah3690.full.pdf',
                'https://robotics.sciencemag.org/content/1/1/eaai7529.full.pdf',
@@ -672,4 +672,4 @@ It's the log information when the framework are running. If your IP address have
 
 ## END
 
-Congratulations! You have experienced some awesome feature scrapy framework provide you. If you want to learn more, you can find more information at its [website](https://scrapy.org/). 
+Congratulations! You have experienced some awesome feature scrapy framework provide you. If you want to learn more, you can find more information at its [website](https://scrapy.org/).

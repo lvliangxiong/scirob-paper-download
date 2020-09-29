@@ -8,7 +8,7 @@ class ScirobSpider(scrapy.Spider):
     name = 'scirob'
     base_url = "https://robotics.sciencemag.org/content/by/year/"
     start_year = 2016
-    current_year = 2016
+    current_year = 2020
 
     custom_settings = {
         "DOWNLOAD_TIMEOUT": 300,

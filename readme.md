@@ -4,13 +4,13 @@ This is a web crawler which can download all the papers on Sci Rob in 5 mins.
 
 ![](https://img.shields.io/badge/language-python-orange.svg)
 
-![](https://img.shields.io/github/search/lvliangxiong/PaperDownload/scrapy)
+![](https://img.shields.io/github/search/lvliangxiong/scirob-paper-download/scrapy)
 
-![](https://img.shields.io/github/search/lvliangxiong/PaperDownload/pdf)
+![](https://img.shields.io/github/search/lvliangxiong/scirob-paper-download/pdf)
 
-![](https://img.shields.io/github/downloads/lvliangxiong/PaperDownload/total)
+![](https://img.shields.io/github/downloads/lvliangxiong/scirob-paper-download/total)
 
-![](https://img.shields.io/github/license/lvliangxiong/PaperDownload)
+![](https://img.shields.io/github/license/lvliangxiong/scirob-paper-download)
 
 [![](https://img.shields.io/badge/email-@JoeyLyu-blue.svg)][email]
 

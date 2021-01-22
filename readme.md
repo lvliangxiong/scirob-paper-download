@@ -1,4 +1,4 @@
-# PaperDownload
+# Science Robotics Paper Download
 
 This is a web crawler which can download all the papers on Sci Rob in 5 mins.
 
